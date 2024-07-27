@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Form, Step, Section
 import uuid
-from .serializers import FormSerializer, StepSerializer, SectionSerializer
+from .serializers import FormSerializer, SectionSerializer
 
 class FormUpdateAPIView(APIView):
     def put(self, request, *args, **kwargs):
@@ -45,19 +45,6 @@ class SectionCreateAPIView(APIView):
         serializer = SectionSerializer(section, many=True)
         return Response(serializer.data)
   
-
-
-class FormDetail(APIView):
-    def get(self, request, pk, *args, **kwargs):
-        form = Form.objects.get(pk=pk)
-        serializer = FormSerializer(form)
-        return Response(serializer.data)
-   
-class StepList(APIView):
-    def get(self, request, *args, **kwargs):
-        steps = Step.objects.all()
-        serializer = StepSerializer(steps, many=True)
-        return Response(serializer.data)
     
 
 class FormCreateAPIView(APIView):
@@ -83,25 +70,3 @@ class FormCreateAPIView(APIView):
             response_serializer = FormSerializer(form)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # def post(self, request, *args, **kwargs):
-    #     serializer = FormSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         random_uuid = uuid.uuid4()
-    #         form = serializer.save()
-        
-    #         form.save()
-    #         steps = []
-    #         for i in range(form.number_of_steps):
-    #             step = Step()
-    #             step.name = f'name{i + 1}'
-    #             step.form= form
-    #             step.order = i 
-    #             steps.append(step)
-    #         Step.objects.bulk_create(steps)
-
-    #         # Refresh form instance to include the created steps
-    #         form.refresh_from_db()
-    #         response_serializer = FormSerializer(form)
-    #         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    

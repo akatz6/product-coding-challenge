@@ -11,6 +11,7 @@ def seed_mymodel(apps, schema_editor):
         {'option': 'text_field'},
         {'option': 'dropdown_field'},
         {'option': 'checkbox_field'},
+        {'option': 'button_field'},
     ]
     
     for entry in data:
