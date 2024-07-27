@@ -1,39 +1,34 @@
 from rest_framework import serializers
-from.models import Form, Field, Step
+from.models import Form, Field, Step, Section
 
+
+        
         
 class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
-        fields = '__all__'
+        fields = ['id', 'option']
+
+class SectionSerializer(serializers.ModelSerializer):
+    field = FieldSerializer(read_only=True)
+    class Meta:
+        model = Section
+        fields = ['id', 'text','style', 'field', 'order' ]
         
-# class StepSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Step
-#         fields = '__all__'
-        
-# class FormSerializer(serializers.ModelSerializer):
-#     form = StepSerializer(many=True, read_only=True)
-#     class Meta:
-#         model = Form
-#         fields = '__all__'
-        
-# class StepSerializer(serializers.ModelSerializer):
-#     step = FormSerializer(many=True, read_only=True)
-#     class Meta:
-#         model = Step
-#         fields = '__all__'
     
 class StepSerializer(serializers.ModelSerializer):
+    sections = SectionSerializer(many=True, read_only=True)
     class Meta:
         model = Step
-        fields = "__all__"
+        fields = ['id', 'description', 'order','sections'  ]
 
 class FormSerializer(serializers.ModelSerializer):
     steps = StepSerializer(many=True, read_only=True)
 
     class Meta:
         model = Form
-        fields = "__all__"
+        fields = ['id', 'name', 'number_of_steps','state','steps']
+        
+
         
 
